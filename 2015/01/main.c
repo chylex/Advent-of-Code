@@ -2,7 +2,7 @@
 
 #define BUFFER_SIZE 256
 
-int walkFloors(int currentFloor, char* instructions, size_t instructionCount);
+int walkFloors(int currentFloor, int* totalInstructionCounter, int* firstEnteredBasement, char* instructions, size_t instructionCount);
 
 int main() {
 	FILE* file;
@@ -13,6 +13,8 @@ int main() {
 	}
 	
 	int floor = 0;
+	int totalInstructionCounter = 0;
+	int firstEnteredBasement = -1;
 	
 	char buffer[BUFFER_SIZE];
 	while (!feof(file)) {
@@ -24,10 +26,11 @@ int main() {
 			return 1;
 		}
 		
-		floor = walkFloors(floor, buffer, readBytes);
+		floor = walkFloors(floor, &totalInstructionCounter, &firstEnteredBasement, buffer, readBytes);
 	}
 	
 	fclose(file);
-	printf("Final floor: %d", floor);
+	printf("Final floor: %d\n", floor);
+	printf("First entered basement: %d\n", firstEnteredBasement);
 	return 0;
 }
