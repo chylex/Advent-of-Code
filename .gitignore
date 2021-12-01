@@ -1,8 +1,13 @@
-cmake-build-debug/
+/.gradle/
+/build/
+/cmake-build-debug/
 
+/.idea/compiler.xml
 /.idea/dictionaries
 /.idea/encodings.xml
+/.idea/gradle.xml
 /.idea/inspectionProfiles/
+/.idea/jarRepositories.xml
 /.idea/modules.xml
 /.idea/misc.xml
 /.idea/vcs.xml
