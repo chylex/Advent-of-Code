@@ -1,5 +1,5 @@
 plugins {
-    kotlin("jvm") version "1.5.10"
+    kotlin("jvm") version "1.6.0"
 	idea
 }
 
@@ -16,6 +16,8 @@ dependencies {
 
 idea {
 	module.excludeDirs.addAll(listOf(
+		file(".gradle"),
+		file("build"),
 		file("cmake-build-debug"),
 		file("gradle")
 	))
