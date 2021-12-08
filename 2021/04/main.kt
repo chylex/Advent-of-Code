@@ -4,7 +4,7 @@ const val SIZE = 5
 
 fun main() {
 	val lineIterator = File("input/1.txt").readLines().iterator()
-	val numbersToDraw = ArrayDeque(lineIterator.next().split(',').map(String::toInt))
+	val numbersToDraw = lineIterator.next().split(',').map(String::toInt).toList()
 	val boards = mutableListOf<Board>()
 	
 	while (lineIterator.hasNext()) {
@@ -21,19 +21,8 @@ fun main() {
 		boards.add(Board(numbers))
 	}
 	
-	val drawnNumbers = mutableSetOf<Int>()
-	
-	while (numbersToDraw.isNotEmpty()) {
-		val calledNumber = numbersToDraw.removeFirst()
-		drawnNumbers.add(calledNumber)
-		
-		val winner = boards.firstOrNull { it.checkWin(drawnNumbers) }
-		if (winner != null) {
-			val score = winner.getScore(drawnNumbers, calledNumber)
-			println("Score: $score")
-			break
-		}
-	}
+	part1(numbersToDraw, boards)
+	part2(numbersToDraw, boards)
 }
 
 class Board(private val numbers: Array<IntArray>) {
@@ -55,5 +44,46 @@ class Board(private val numbers: Array<IntArray>) {
 	
 	fun getScore(drawnNumbers: Set<Int>, calledNumber: Int): Int {
 		return calledNumber * numbers.sumOf { it.filterNot(drawnNumbers::contains).sum() }
+	}
+}
+
+private fun part1(numbersToDraw: List<Int>, boards: List<Board>) {
+	val numbersLeftToDraw = ArrayDeque(numbersToDraw)
+	val drawnNumbers = mutableSetOf<Int>()
+	
+	while (numbersLeftToDraw.isNotEmpty()) {
+		val calledNumber = numbersLeftToDraw.removeFirst()
+		drawnNumbers.add(calledNumber)
+		
+		val winner = boards.firstOrNull { it.checkWin(drawnNumbers) }
+		if (winner != null) {
+			val score = winner.getScore(drawnNumbers, calledNumber)
+			println("Score of first board: $score")
+			return
+		}
+	}
+}
+
+private fun part2(numbersToDraw: List<Int>, boards: List<Board>) {
+	val numbersLeftToDraw = ArrayDeque(numbersToDraw)
+	val drawnNumbers = mutableSetOf<Int>()
+	val boardsLeft = boards.toMutableList()
+	
+	while (numbersLeftToDraw.isNotEmpty()) {
+		val calledNumber = numbersLeftToDraw.removeFirst()
+		drawnNumbers.add(calledNumber)
+		
+		while (true) {
+			val winner = boardsLeft.firstOrNull { it.checkWin(drawnNumbers) } ?: break
+			
+			if (boardsLeft.size > 1) {
+				boardsLeft.remove(winner)
+			}
+			else {
+				val score = winner.getScore(drawnNumbers, calledNumber)
+				println("Score of last board: $score")
+				return
+			}
+		}
 	}
 }
