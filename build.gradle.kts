@@ -26,11 +26,20 @@ idea {
 sourceSets {
 	fun make(year: Int, day: Int) {
 		val paddedDay = day.toString().padStart(2, '0')
-		val folder = file("$year/$paddedDay")
+		
+		val sourceFolder = file("$year/$paddedDay")
+		val resourceFolder = sourceFolder.resolve("input")
+		
+		if (!sourceFolder.exists()) {
+			sourceFolder.mkdir()
+			sourceFolder.resolve("main.kt").writeText("fun main() {\n\t\n}")
+			resourceFolder.mkdir()
+			resourceFolder.resolve("1.txt").writeText("")
+		}
 		
 		create("$year-$paddedDay") {
-			java.setSrcDirs(listOf(folder))
-			resources.setSrcDirs(listOf(folder.resolve("input")))
+			java.setSrcDirs(listOf(sourceFolder))
+			resources.setSrcDirs(listOf(resourceFolder))
 		}
 	}
 	
