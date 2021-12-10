@@ -1,44 +1,54 @@
 import java.io.File
-import java.util.Collections
+import java.math.BigInteger
+import kotlin.system.measureTimeMillis
 
 fun main() {
-	val initialConfiguration = File("input/1.txt").readLines().single().split(',').map(String::toInt)
-	val configuration = FishConfiguration(initialConfiguration)
+	val initialConfiguration = File("input/1.txt").readLines()
+		.single()
+		.split(',')
+		.map(String::toInt)
 	
-	for (day in 1..80) {
-		configuration.advanceToNextDay()
-		// configuration.print()
-	}
-	
-	println("Total fish: ${configuration.totalFish}")
+	println("(Took ${measureTimeMillis { part1(initialConfiguration) }} ms)")
+	println("(Took ${measureTimeMillis { part2(initialConfiguration) }} ms)")
 }
 
 class FishConfiguration(initialConfiguration: List<Int>) {
-	private val state = initialConfiguration.toMutableList()
+	private var fishCountByAge = Array(9) { age -> initialConfiguration.count { it == age }.toBigInteger() }
 	private var day = 0
 	
-	val totalFish
-		get() = state.size
+	private val totalFish
+		get() = fishCountByAge.fold(BigInteger.ZERO, BigInteger::add)
 	
-	fun advanceToNextDay() {
-		++day
+	fun advance(days: Int) {
+		for (day in 1..days) {
+			advanceToNextDay()
+		}
+	}
+	
+	private fun advanceToNextDay() {
+		val newCountByAge = Array(9) { BigInteger.ZERO}
 		
-		var newFish = 0
-		for ((index, timer) in state.withIndex()) {
-			if (timer == 0) {
-				++newFish
-				state[index] = 6
+		for ((age, count) in fishCountByAge.withIndex()) {
+			if (age == 0) {
+				newCountByAge[6] += count
+				newCountByAge[8] += count
 			}
 			else {
-				state[index] = timer - 1
+				newCountByAge[age - 1] += count
 			}
 		}
 		
-		state.addAll(Collections.nCopies(newFish, 8))
+		fishCountByAge = newCountByAge
+		++day
+		
+		println("Day ${day.toString().padStart(3)}: $totalFish fish")
 	}
-	
-	@Suppress("unused")
-	fun print() {
-		println("Day ${day.toString().padStart(3)}: ${state.joinToString(",")}")
-	}
+}
+
+fun part1(initialConfiguration: List<Int>) {
+	FishConfiguration(initialConfiguration).advance(80)
+}
+
+fun part2(initialConfiguration: List<Int>) {
+	FishConfiguration(initialConfiguration).advance(256)
 }
