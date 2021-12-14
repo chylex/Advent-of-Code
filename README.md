@@ -36,3 +36,4 @@ The versions should not matter, but I used Visual Studio 2019 with `MSVC v142 (1
 | 2021 |  04 | Kotlin   |
 | 2021 |  05 | Kotlin   |
 | 2021 |  06 | Kotlin   |
+| 2021 |  07 | Kotlin   |
