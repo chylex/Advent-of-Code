@@ -50,4 +50,5 @@ sourceSets {
 	make(2021, 5)
 	make(2021, 6)
 	make(2021, 7)
+	make(2021, 8)
 }
