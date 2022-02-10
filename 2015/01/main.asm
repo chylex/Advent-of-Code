@@ -1,32 +1,30 @@
 bits 32
+extern _printf
 
 section .data
+
+print_final_floor:            db `Final floor: %d\n`, 0
+print_first_entered_basement: db `First entered basement: %d\n`, 0
+
 section .text
 
-global _walkFloors
+global _entryPoint
 
-_walkFloors:
+_entryPoint:
   enter 0,0
   push ebx
   push edi
 
-  ; [ ebp +  8 ] = int currentFloor
-  ; [ ebp + 12 ] = int* totalInstructionCounter
-  ; [ ebp + 16 ] = int* firstEnteredBasement
-  ; [ ebp + 20 ] = char* instructions
-  ; [ ebp + 24 ] = size_t instructionCount
-
-  mov eax, [ ebp +  8 ] ; eax = currentFloor
-  mov edx, [ ebp + 20 ] ; edx = instructions
-  xor ecx, ecx          ; ecx = 0
+  xor eax, eax         ; current floor
+  xor ebx, ebx         ; current instruction
+  xor ecx, ecx         ; instruction counter
+  mov edx, [ ebp + 8 ] ; instruction pointer
+  mov edi, -1          ; first entered basement (-1 = unset)
 
 .instructionLoop:
-  cmp ecx, [ ebp + 24 ] ; check if we went past instructionCount
-  jge .end              ; if so, we are done here
-  inc ecx               ; otherwise, increment instruction counter and continue
-
+  inc ecx         ; increment instruction counter
   mov bl, [ edx ] ; bl = instructions[edx]
-  inc edx         ; edx++
+  inc edx         ; increment instruction pointer
 
   cmp bl, '('       ; left parenthesis...
   je .moveUpFloor   ; moves up a floor
@@ -45,21 +43,19 @@ _walkFloors:
   jmp .instructionLoop
 
  .onEnteredBasement:
-  mov ebx, [ ebp + 16 ] ; ebx = &firstEnteredBasement
-  cmp dword [ ebx ], -1 ; check if firstEnteredBasement has not been set yet
-  jne .instructionLoop  ; if it was already set, go to next instruction
-
-  mov edi, [ ebp + 12 ]  ; edi = &totalInstructionCounter
-  mov edi, [ edi ]       ; edi = totalInstructionCounter
-  add edi, ecx           ; add current instruction counter to the total
-  mov dword [ ebx ], edi ; set firstEnteredBasement to the total
+  cmp edi, -1          ; check if firstEnteredBasement has not been set yet
+  jne .instructionLoop ; if it was already set, go to next instruction
+  mov edi, ecx         ; set first entered basement to instruction counter
   jmp .instructionLoop
 
 .end:
-  mov edi, [ ebp + 12 ]  ; edi = &totalInstructionCounter
-  mov ebx, [ edi ]       ; ebx = totalInstructionCounter
-  add ebx, ecx           ; add current instruction counter to the total
-  mov dword [ edi ], ebx ; set totalInstructionCounter to the new total
+  push eax
+  push dword print_final_floor
+  call _printf
+
+  push edi
+  push dword print_first_entered_basement
+  call _printf
 
   pop edi
   pop ebx

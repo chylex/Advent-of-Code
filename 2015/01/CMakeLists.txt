@@ -6,4 +6,4 @@ enable_language(ASM_NASM)
 set(CMAKE_NASM_LINK_EXECUTABLE "ld <LINK_FLAGS> <OBJECTS> -o <TARGET> <LINK_LIBRARIES>")
 set(CAN_USE_ASSEMBLER TRUE)
 
-add_executable(${PROJECT_NAME} main.asm main.c)
+add_executable(${PROJECT_NAME} main.asm ../utils/main.c ../utils/file.h)
