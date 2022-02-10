@@ -1,5 +1,5 @@
 bits 32
-extern _printf
+extern _print
 
 section .data
 
@@ -51,11 +51,11 @@ _entryPoint:
 .end:
   push eax
   push dword print_final_floor
-  call _printf
+  call _print
 
   push edi
   push dword print_first_entered_basement
-  call _printf
+  call _print
 
   pop edi
   pop ebx
