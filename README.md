@@ -12,13 +12,13 @@ The repository contains a Gradle project (`build.gradle.kts`) that sets up every
 
 The source code is in `main.kt`. The run configuration executes the `main()` method in this file.
 
-## NASM x86 Assembly
+## NASM x86 / x64 Assembly
 
-The repository contains a CMake project (`CMakeLists.txt`) that sets up every day as a CMake subproject. You should be able to load the CMake project into [CLion](https://www.jetbrains.com/clion/).
+The repository contains a CMake project (`CMakeLists.txt`) in the respective year's folder, which sets up every day as a CMake subproject. You should be able to load the CMake project into [CLion](https://www.jetbrains.com/clion/).
 
 The source code is in `main.c`, which is either in the puzzle's own folder, or in `utils` if no adjustments are needed. By default, `main.c` reads the whole input file into a buffer, and passes it as a parameter to the `entryPoint` function defined in `main.asm` which implements the logic and output of each puzzle.
 
-Note that everything is targeted for Windows x86 or WoW64, and assembly is not portable, so running on a different OS will most likely require some changes. You will need to:
+Note that everything is targeted for Windows and assembly is not portable, so running on a different OS will most likely require some changes. You will need to:
 
 1. Install [Visual Studio](https://visualstudio.microsoft.com/) with `MSVC x64/x86 Build Tools`
 2. Install [NASM](https://www.nasm.us/pub/nasm/releasebuilds/?C=M;O=D) (the "Executable only" version will suffice, as long as you setup the system `%PATH%` environment variable to include the folder with `nasm.exe`)
