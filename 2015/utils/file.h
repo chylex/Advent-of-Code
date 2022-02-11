@@ -56,7 +56,7 @@ char* readFile(const char* filename) {
 	fclose(file);
 	
 	if (position != fileSize) {
-		printf("Error reading whole file, read only %d bytes out of %d\n", position, fileSize);
+		printf("Error reading whole file, read only %zu bytes out of %d\n", position, fileSize);
 		free(contents);
 		return NULL;
 	}

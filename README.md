@@ -14,7 +14,9 @@ The source code is in `main.kt`. The run configuration executes the `main()` met
 
 ## NASM x86 / x64 Assembly
 
-The repository contains a CMake project (`CMakeLists.txt`) in the respective year's folder, which sets up every day as a CMake subproject. You should be able to load the CMake project into [CLion](https://www.jetbrains.com/clion/).
+The repository contains a CMake project (`CMakeLists.txt`) in the respective year's folder, which sets up every day as a CMake subproject. You should be able to load the CMake project into [CLion](https://www.jetbrains.com/clion/), as long as you have two toolchains set up:
+- Visual Studio x86
+- Visual Studio x64
 
 The source code is in `main.c`, which is either in the puzzle's own folder, or in `utils` if no adjustments are needed. By default, `main.c` reads the whole input file into a buffer, and passes it as a parameter to the `entryPoint` function defined in `main.asm` which implements the logic and output of each puzzle.
 
