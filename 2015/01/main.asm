@@ -1,25 +1,29 @@
-bits 32
+bits 64
+default rel
 
 section .text
 
-extern _print
-global _entryPoint
+extern print
+global entryPoint
 
-_entryPoint:
-  enter 0,0
-  push ebx
-  push edi
+entryPoint:
+  push rbp
+  mov rbp, rsp
 
-  xor eax, eax         ; current floor
-  xor ebx, ebx         ; current instruction
-  xor ecx, ecx         ; instruction counter
-  mov edx, [ ebp + 8 ] ; instruction pointer
-  mov edi, -1          ; first entered basement (-1 = unset)
+  push rbx
+  push rdi
+  sub rsp, 32
+
+  mov rdx, rcx ; instruction pointer
+  xor rax, rax ; current floor
+  xor rbx, rbx ; current instruction
+  xor rcx, rcx ; instruction counter
+  mov rdi, -1  ; first entered basement (-1 = unset)
 
 .instructionLoop:
-  inc ecx         ; increment instruction counter
-  mov bl, [ edx ] ; bl = instructions[edx]
-  inc edx         ; increment instruction pointer
+  inc rcx                 ; increment instruction counter
+  movzx rbx, byte [ rdx ] ; bl = instructions[rdx]
+  inc rdx                 ; increment instruction pointer
 
   cmp bl, '('       ; left parenthesis...
   je .moveUpFloor   ; moves up a floor
@@ -28,36 +32,34 @@ _entryPoint:
   jmp .end          ; unknown character skips to the end
 
 .moveUpFloor:
-  inc eax
+  inc rax
   jmp .instructionLoop
 
 .moveDownFloor:
-  dec eax
-  cmp eax, -1 ; check if we entered the basement
+  dec rax
+  cmp rax, -1 ; check if we entered the basement
   je .onEnteredBasement
   jmp .instructionLoop
 
  .onEnteredBasement:
-  cmp edi, -1          ; check if firstEnteredBasement has not been set yet
+  cmp rdi, -1          ; check if firstEnteredBasement has not been set yet
   jne .instructionLoop ; if it was already set, go to next instruction
-  mov edi, ecx         ; set first entered basement to instruction counter
+  mov rdi, rcx         ; set first entered basement to instruction counter
   jmp .instructionLoop
 
 .end:
-  push eax
-  push dword print_final_floor
-  call _print
-  pop eax
-  pop eax
+  lea rcx, [ print_final_floor ]
+  mov rdx, rax
+  call print
 
-  push edi
-  push dword print_first_entered_basement
-  call _print
-  pop edi
-  pop edi
+  lea rcx, [ print_first_entered_basement ]
+  mov rdx, rdi
+  call print
 
-  pop edi
-  pop ebx
+  add rsp, 32
+  pop rdi
+  pop rbx
+
   leave
   ret
 

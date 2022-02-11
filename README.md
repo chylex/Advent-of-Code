@@ -12,11 +12,9 @@ The repository contains a Gradle project (`build.gradle.kts`) that sets up every
 
 The source code is in `main.kt`. The run configuration executes the `main()` method in this file.
 
-## NASM x86 / x64 Assembly
+## NASM x64 Assembly
 
-The repository contains a CMake project (`CMakeLists.txt`) in the respective year's folder, which sets up every day as a CMake subproject. You should be able to load the CMake project into [CLion](https://www.jetbrains.com/clion/), as long as you have two toolchains set up:
-- Visual Studio x86
-- Visual Studio x64
+The repository contains a CMake project (`CMakeLists.txt`) in the respective year's folder, which sets up every day as a CMake subproject. You should be able to load the CMake project into [CLion](https://www.jetbrains.com/clion/), as long as you have a toolchain named `Visual Studio x64` set to use the `amd64` architecture.
 
 The source code is in `main.c`, which is either in the puzzle's own folder, or in `utils` if no adjustments are needed. By default, `main.c` reads the whole input file into a buffer, and passes it as a parameter to the `entryPoint` function defined in `main.asm` which implements the logic and output of each puzzle.
 
@@ -31,7 +29,7 @@ The versions should not matter, but I used Visual Studio 2019 with `MSVC v142 (1
 
 | Year | Day | Language |
 |-----:|----:|----------|
-| 2015 |  01 | NASM x86 |
+| 2015 |  01 | NASM x64 |
 | 2015 |  02 | NASM x64 |
 | 2021 |  01 | Kotlin   |
 | 2021 |  02 | Kotlin   |
