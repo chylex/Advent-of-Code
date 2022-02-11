@@ -9,3 +9,4 @@ set(CMAKE_NASM_LINK_EXECUTABLE "ld <LINK_FLAGS> <OBJECTS> -o <TARGET> <LINK_LIBR
 set(CAN_USE_ASSEMBLER TRUE)
 
 add_subdirectory(01)
+add_subdirectory(02)
