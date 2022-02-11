@@ -1,13 +1,8 @@
 bits 32
-extern _print
-
-section .data
-
-print_final_floor:            db `Final floor: %d\n`, 0
-print_first_entered_basement: db `First entered basement: %d\n`, 0
 
 section .text
 
+extern _print
 global _entryPoint
 
 _entryPoint:
@@ -52,12 +47,21 @@ _entryPoint:
   push eax
   push dword print_final_floor
   call _print
+  pop eax
+  pop eax
 
   push edi
   push dword print_first_entered_basement
   call _print
+  pop edi
+  pop edi
 
   pop edi
   pop ebx
   leave
   ret
+
+section .data
+
+print_final_floor:            db `Final floor: %d\n`, 0
+print_first_entered_basement: db `First entered basement: %d\n`, 0
