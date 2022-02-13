@@ -12,6 +12,7 @@ entryPoint:
 
   push rbx
   push r12
+  push r13
   sub rsp, 32
 
   ; rax = reserved for math
@@ -24,9 +25,11 @@ entryPoint:
   ; r10 = second dimension
   ; r11 = third dimension
   ; r12 = total wrapping paper required
+  ; r13 = total ribbon length required
 
   xor rdx, rdx
   xor r12, r12
+  xor r13, r13
 
 .nextLine:
   call .nextNumber
@@ -53,21 +56,31 @@ entryPoint:
   mov rax, 2
   mul r9
   mul r10
-  add r12, rax ; add 2 * dim1 * dim2
+  add r12, rax ; add 2 * dim1 * dim2 to wrapping paper length
 
   mov rax, 2
   mul r9
   mul r11
-  add r12, rax ; add 2 * dim1 * dim3
+  add r12, rax ; add 2 * dim1 * dim3 to wrapping paper length
 
   mov rax, 2
   mul r10
   mul r11
-  add r12, rax ; add 2 * dim2 * dim3
+  add r12, rax ; add 2 * dim2 * dim3 to wrapping paper length
 
   mov rax, r9
   mul r10
-  add r12, rax ; add square area of smallest side
+  add r12, rax ; add square area of smallest side to wrapping paper length
+
+  add r13, r9
+  add r13, r9
+  add r13, r10
+  add r13, r10 ; add smallest perimeter to the ribbon length
+
+  mov rax, r9
+  mul r10
+  mul r11
+  add r13, rax ; add volume of the present to the ribbon length
 
   movzx rbx, byte [ rcx ] ; read current character
   cmp bl, 0               ; if we have not reached end of string yet,
@@ -77,7 +90,12 @@ entryPoint:
   mov rdx, r12
   call print
 
+  lea rcx, [ print_ribbon_length ]
+  mov rdx, r13
+  call print
+
   add rsp, 32
+  pop r13
   pop r12
   pop rbx
 
@@ -111,3 +129,4 @@ entryPoint:
 section .data
 
 print_wrapping_paper: db `Wrapping paper required: %d\n`, 0
+print_ribbon_length:  db `Ribbon length required: %d\n`, 0
