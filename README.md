@@ -6,15 +6,21 @@ I have included Run Configurations for JetBrains IDEs, so if you use the appropr
 
 # Languages
 
-## Kotlin
+## \[2021\] Kotlin
 
 The repository contains a Gradle project (`build.gradle.kts`) that sets up every day as a module. You should be able to load the Gradle project into [IntelliJ IDEA](https://www.jetbrains.com/idea/).
 
 The source code is in `main.kt`. The run configuration executes the `main()` method in this file.
 
-## NASM x64 Assembly
+## \[2020\] Rust
 
-The repository contains a CMake project (`CMakeLists.txt`) in the respective year's folder, which sets up every day as a CMake subproject. You should be able to load the CMake project into [CLion](https://www.jetbrains.com/clion/), as long as you have a toolchain named `Visual Studio x64` set to use the `amd64` architecture.
+The repository contains a Cargo project (`2020/Cargo.toml`) that sets up every day as a binary target that can be launched with `cargo run --bin <day>`, for ex. `cargo run --bin 01`. You should be able to load the Cargo project into [CLion](https://www.jetbrains.com/clion/).
+
+The source code is in `main.rs`. The run configuration executes the `main()` function in this file.
+
+## \[2015\] NASM x64 Assembly
+
+The repository contains a CMake project (`2015/CMakeLists.txt`) in the respective year's folder, which sets up every day as a CMake subproject. You should be able to load the CMake project into [CLion](https://www.jetbrains.com/clion/), as long as you have a toolchain named `Visual Studio x64` set to use the `amd64` architecture.
 
 The source code is in `main.c`, which is either in the puzzle's own folder, or in `utils` if no adjustments are needed. By default, `main.c` reads the whole input file into a buffer, and passes it as a parameter to the `entryPoint` function defined in `main.asm` which implements the logic and output of each puzzle.
 

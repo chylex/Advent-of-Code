@@ -18,8 +18,9 @@ idea {
 	module.excludeDirs.addAll(listOf(
 		file(".gradle"),
 		file("build"),
-		file("cmake-build-debug"),
-		file("gradle")
+		file("gradle"),
+		file("2015"),
+		file("2020")
 	))
 }
 
