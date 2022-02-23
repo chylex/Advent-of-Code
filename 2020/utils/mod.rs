@@ -1,5 +1,5 @@
 use std::error::Error;
-use std::fmt::{Display, Formatter};
+use std::fmt::{Debug, Display, Formatter};
 use std::fs::File;
 use std::io;
 use std::io::{BufRead, BufReader};
@@ -14,21 +14,26 @@ pub fn parse_input_lines<T : FromStr>() -> Result<Vec<T>, Box<dyn Error>> where 
 	return read_input_lines()?.iter().map(|line| line.parse::<T>()).collect::<Result<Vec<T>, T::Err>>().map_err(Into::into);
 }
 
-#[derive(Debug)]
-pub struct GenericError<'a> {
-	pub message: &'a str
+pub struct GenericError {
+	pub message: String
 }
 
-impl<'a> GenericError<'a> {
-	pub fn new(message: &'a str) -> GenericError<'a> {
-		GenericError { message }
+impl GenericError {
+	pub fn new(message: impl Into<String>) -> GenericError {
+		GenericError { message: message.into() }
 	}
 }
 
-impl Display for GenericError<'_> {
+impl Display for GenericError {
 	fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
 		write!(f, "Parse error: {}", self.message)
 	}
 }
 
-impl Error for GenericError<'_> {}
+impl Debug for GenericError {
+	fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
+		Display::fmt(self, f)
+	}
+}
+
+impl Error for GenericError {}

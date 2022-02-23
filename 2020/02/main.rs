@@ -38,14 +38,14 @@ impl PasswordRule {
 }
 
 impl FromStr for PasswordRule {
-	type Err = GenericError<'static>;
+	type Err = GenericError;
 	
 	fn from_str(s: &str) -> Result<Self, Self::Err> {
 		let (s_range, s_rest) = s.split_once(' ').ok_or(GenericError::new("Missing space."))?;
 		let (s_min, s_max) = s_range.split_once('-').ok_or(GenericError::new("Missing dash in the left part of the input."))?;
 		let (s_char, s_password) = s_rest.split_once(": ").ok_or(GenericError::new("Missing colon followed by space in the right part of the input."))?;
 		
-		return Ok(PasswordRule {
+		Ok(PasswordRule {
 			left_value: s_min.parse::<usize>().map_err(|_| GenericError::new("Cannot parse first number."))?,
 			right_value: s_max.parse::<usize>().map_err(|_| GenericError::new("Cannot parse second number."))?,
 			required_char: s_char.to_string(),
