@@ -10,6 +10,7 @@ pub fn read_input_lines() -> Result<Vec<String>, io::Error> {
 	return BufReader::new(file).lines().collect();
 }
 
+#[allow(dead_code)]
 pub fn parse_input_lines<T : FromStr>() -> Result<Vec<T>, Box<dyn Error>> where <T as FromStr>::Err : Into<Box<dyn Error>> {
 	return read_input_lines()?.iter().map(|line| line.parse::<T>()).collect::<Result<Vec<T>, T::Err>>().map_err(Into::into);
 }

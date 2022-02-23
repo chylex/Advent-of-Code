@@ -40,6 +40,7 @@ The versions should not matter, but I used Visual Studio 2019 with `MSVC v142 (1
 | 2020 |  01 | Rust     |
 | 2020 |  02 | Rust     |
 | 2020 |  03 | Rust     |
+| 2020 |  04 | Rust     |
 | 2021 |  01 | Kotlin   |
 | 2021 |  02 | Kotlin   |
 | 2021 |  03 | Kotlin   |
