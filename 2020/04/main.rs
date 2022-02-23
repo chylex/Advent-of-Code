@@ -12,8 +12,9 @@ fn main() -> Result<(), Box<dyn Error>> {
 	let lines = utils::read_input_lines()?;
 	let passports = load_passports(&lines)?;
 	
-	let valid_passports = passports.iter().filter(|p| p.is_valid_or_from_north_pole()).count();
-	println!("Valid passports: {}", valid_passports);
+	let passports = passports.into_iter().filter(|p| p.is_valid_or_from_north_pole()).collect::<Vec<Passport>>();
+	println!("Valid passports with no field validation: {}", passports.len());
+	println!("Valid passports with field validation: {}", passports.iter().filter(|p| p.are_field_values_valid()).count());
 	
 	Ok(())
 }
@@ -61,22 +62,39 @@ impl PassportField {
 			_ => None
 		}
 	}
+	
+	fn is_value_valid(&self, value: &str) -> bool {
+		fn as_u32(value: &str) -> Option<u32> {
+			value.parse().ok()
+		}
+		
+		fn as_u32_with_unit(value: &str, unit: &str) -> Option<u32> {
+			value.strip_suffix(unit).and_then(as_u32)
+		}
+		
+		match self {
+			PassportField::BirthYear => as_u32(value).filter(|year| *year >= 1920 && *year <= 2002).is_some(),
+			PassportField::IssueYear => as_u32(value).filter(|year| *year >= 2010 && *year <= 2020).is_some(),
+			PassportField::ExpirationYear => as_u32(value).filter(|year| *year >= 2020 && *year <= 2030).is_some(),
+			PassportField::Height => {
+				if let Some(height) = as_u32_with_unit(value, "cm") {
+					height >= 150 && height <= 193
+				} else if let Some(height) = as_u32_with_unit(value, "in") {
+					height >= 59 && height <= 76
+				} else {
+					false
+				}
+			}
+			PassportField::HairColor => value.strip_prefix('#').filter(|hex| hex.chars().all(|c| c.is_digit(16))).is_some(),
+			PassportField::EyeColor => VALID_EYE_COLORS.contains(value),
+			PassportField::PassportId => value.len() == 9 && value.chars().all(|c| c.is_ascii_digit()),
+			PassportField::CountryId => true
+		}
+	}
 }
 
 struct Passport {
 	fields: HashMap<PassportField, String>,
-}
-
-lazy_static! {
-	static ref REQUIRED_FIELDS: HashSet<PassportField> = HashSet::from([
-		PassportField::BirthYear,
-		PassportField::IssueYear,
-		PassportField::ExpirationYear,
-		PassportField::Height,
-		PassportField::HairColor,
-		PassportField::EyeColor,
-		PassportField::PassportId
-	]);
 }
 
 impl Passport {
@@ -98,4 +116,24 @@ impl Passport {
 		let fields = &self.fields.keys().map(|f| *f).collect::<HashSet<PassportField>>();
 		return fields.is_superset(&REQUIRED_FIELDS);
 	}
+	
+	fn are_field_values_valid(&self) -> bool {
+		return self.fields.iter().all(|(field, value)| field.is_value_valid(value.as_str()));
+	}
+}
+
+lazy_static! {
+	static ref REQUIRED_FIELDS: HashSet<PassportField> = HashSet::from([
+		PassportField::BirthYear,
+		PassportField::IssueYear,
+		PassportField::ExpirationYear,
+		PassportField::Height,
+		PassportField::HairColor,
+		PassportField::EyeColor,
+		PassportField::PassportId
+	]);
+	
+	static ref VALID_EYE_COLORS: HashSet<&'static str> = HashSet::from([
+		"amb", "blu", "brn", "gry", "grn", "hzl", "oth"
+	]);
 }
