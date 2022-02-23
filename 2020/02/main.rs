@@ -1,3 +1,4 @@
+use std::collections::HashSet;
 use std::error::Error;
 use std::str::FromStr;
 
@@ -9,8 +10,8 @@ mod utils;
 fn main() -> Result<(), Box<dyn Error>> {
 	let lines = utils::parse_input_lines::<PasswordRule>()?;
 	
-	let valid_passwords = lines.iter().filter(|x| x.is_valid()).count();
-	println!("Valid passwords: {}", valid_passwords);
+	println!("Valid passwords according to part 1 rules: {}", lines.iter().filter(|x| x.is_valid_part1()).count());
+	println!("Valid passwords according to part 2 rules: {}", lines.iter().filter(|x| x.is_valid_part2()).count());
 	
 	Ok(())
 }
@@ -23,9 +24,16 @@ struct PasswordRule {
 }
 
 impl PasswordRule {
-	fn is_valid(&self) -> bool {
+	fn is_valid_part1(&self) -> bool {
 		let count = self.actual_password.matches(self.required_char.as_str()).count();
 		return count >= self.left_value && count <= self.right_value;
+	}
+	
+	fn is_valid_part2(&self) -> bool {
+		let positions = self.actual_password.match_indices(self.required_char.as_str()).map(|(index, _)| index + 1).collect::<HashSet<usize>>();
+		let is_in_first_position = positions.contains(&self.left_value);
+		let is_in_second_position = positions.contains(&self.right_value);
+		return (is_in_first_position && !is_in_second_position) || (!is_in_first_position && is_in_second_position);
 	}
 }
 
