@@ -1,15 +1,31 @@
+use std::collections::HashSet;
 use std::error::Error;
 
 use crate::pass::BoardingPass;
+use crate::utils::GenericError;
 
 #[path = "../utils/mod.rs"]
 mod utils;
 
 fn main() -> Result<(), Box<dyn Error>> {
 	let passes = utils::parse_input_lines::<BoardingPass>()?;
+	let seat_ids = passes.iter().map(BoardingPass::get_seat_id).collect::<HashSet<u32>>();
 	
-	let max_seat_id = passes.iter().map(BoardingPass::get_seat_id).max().unwrap_or(0);
+	let max_seat_id = *seat_ids.iter().max().unwrap_or(&0);
 	println!("Max seat ID: {}", max_seat_id);
+	
+	let missing_seat_ids = (0..=max_seat_id).filter(|id| !seat_ids.contains(id)).collect::<HashSet<u32>>();
+	let your_seat_id_candidates = missing_seat_ids.iter()
+		.map(|id| *id)
+		.filter(|id| *id > 0 && *id < max_seat_id && !missing_seat_ids.contains(&(*id - 1)) && !missing_seat_ids.contains(&(*id + 1)))
+		.collect::<Vec<u32>>();
+	
+	if your_seat_id_candidates.len() != 1 {
+		Err(GenericError::new(format!("Cannot find your seat ID, too many candidates: {:?}", your_seat_id_candidates)))?;
+	}
+	else {
+		println!("Your seat ID: {}", your_seat_id_candidates.first().unwrap());
+	}
 	
 	Ok(())
 }
