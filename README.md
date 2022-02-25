@@ -33,22 +33,13 @@ The versions should not matter, but I used Visual Studio 2019 with `MSVC v142 (1
 
 # Solved Days
 
-| Year | Day | Language |
-|-----:|----:|----------|
-| 2015 |  01 | NASM x64 |
-| 2015 |  02 | NASM x64 |
-| 2015 |  03 | NASM x64 |
-| 2020 |  01 | Rust     |
-| 2020 |  02 | Rust     |
-| 2020 |  03 | Rust     |
-| 2020 |  04 | Rust     |
-| 2020 |  05 | Rust     |
-| 2020 |  06 | Rust     |
-| 2021 |  01 | Kotlin   |
-| 2021 |  02 | Kotlin   |
-| 2021 |  03 | Kotlin   |
-| 2021 |  04 | Kotlin   |
-| 2021 |  05 | Kotlin   |
-| 2021 |  06 | Kotlin   |
-| 2021 |  07 | Kotlin   |
-| 2021 |  08 | Kotlin   |
+| Year | Day | Language |  /  | Year | Day | Language |  /  | Year | Day | Language |
+|-----:|----:|----------|-----|------|-----|----------|-----|------|-----|----------|
+| 2015 |  01 | NASM x64 |  /  | 2020 |  01 | Rust     |  /  | 2021 |  01 | Kotlin   |
+| 2015 |  02 | NASM x64 |  /  | 2020 |  02 | Rust     |  /  | 2021 |  02 | Kotlin   |
+| 2015 |  03 | NASM x64 |  /  | 2020 |  03 | Rust     |  /  | 2021 |  03 | Kotlin   |
+|      |     |          |  /  | 2020 |  04 | Rust     |  /  | 2021 |  04 | Kotlin   |
+|      |     |          |  /  | 2020 |  05 | Rust     |  /  | 2021 |  05 | Kotlin   |
+|      |     |          |  /  | 2020 |  06 | Rust     |  /  | 2021 |  06 | Kotlin   |
+|      |     |          |  /  |      |     |          |  /  | 2021 |  07 | Kotlin   |
+|      |     |          |  /  |      |     |          |  /  | 2021 |  08 | Kotlin   |
