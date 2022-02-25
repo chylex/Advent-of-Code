@@ -9,8 +9,12 @@ mod utils;
 fn main() -> Result<(), Box<dyn Error>> {
 	let rules = utils::parse_input_lines::<Rule>()?;
 	
-	let count = rules::count_bags_which_contain(&rules, String::from("shiny gold"));
-	println!("Amount of bags which contain a 'shiny gold' bag: {}", count);
+	let shiny_gold = String::from("shiny gold");
+	let bags_which_contain = rules::count_bags_which_contain(&rules, &shiny_gold);
+	let bags_contained_inside = rules::count_bags_contained_inside(&rules, &shiny_gold);
+	
+	println!("Amount of bags which contain a 'shiny gold' bag: {}", bags_which_contain);
+	println!("Amount of bags contained inside a 'shiny gold' bag: {}", bags_contained_inside);
 	
 	Ok(())
 }
@@ -26,10 +30,10 @@ mod rules {
 		contains: HashMap<String, u16>,
 	}
 	
-	pub fn count_bags_which_contain(rules: &Vec<Rule>, target_bag: String) -> usize {
+	pub fn count_bags_which_contain(rules: &Vec<Rule>, target_bag: &String) -> usize {
 		let mut containers = HashSet::new();
 		let mut queue = HashSet::new();
-		queue.insert(&target_bag);
+		queue.insert(target_bag);
 		
 		while !queue.is_empty() {
 			for bag in queue.drain().collect::<Vec<&String>>() {
@@ -42,6 +46,28 @@ mod rules {
 		}
 		
 		return containers.len();
+	}
+	
+	pub fn count_bags_contained_inside(rules: &Vec<Rule>, target_bag: &String) -> usize {
+		let rule_map = rules.iter().map(|rule| (rule.bag.clone(), rule)).collect::<HashMap<String, &Rule>>();
+		
+		let mut total = 0usize;
+		let mut queue = Vec::new();
+		queue.push((target_bag, 1));
+		
+		while !queue.is_empty() {
+			for (bag, amount) in queue.drain(..).collect::<Vec<(&String, usize)>>() {
+				if let Some(rule) = rule_map.get(bag.as_str()) {
+					for (contained_bag, contained_amount) in rule.contains.iter() {
+						let amount = amount * *contained_amount as usize;
+						total += amount;
+						queue.push((contained_bag, amount));
+					}
+				}
+			}
+		}
+		
+		return total;
 	}
 	
 	impl FromStr for Rule {
