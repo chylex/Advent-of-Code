@@ -41,5 +41,5 @@ The versions should not matter, but I used Visual Studio 2019 with `MSVC v142 (1
 |      |     |          |  /  | 2020 |  04 | Rust     |  /  | 2021 |  04 | Kotlin   |
 |      |     |          |  /  | 2020 |  05 | Rust     |  /  | 2021 |  05 | Kotlin   |
 |      |     |          |  /  | 2020 |  06 | Rust     |  /  | 2021 |  06 | Kotlin   |
-|      |     |          |  /  |      |     |          |  /  | 2021 |  07 | Kotlin   |
+|      |     |          |  /  | 2020 |  07 | Rust     |  /  | 2021 |  07 | Kotlin   |
 |      |     |          |  /  |      |     |          |  /  | 2021 |  08 | Kotlin   |
