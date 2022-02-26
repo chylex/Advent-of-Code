@@ -9,24 +9,54 @@ mod utils;
 
 fn main() -> Result<(), Box<dyn Error>> {
 	let instructions = utils::parse_input_lines::<Instruction>()?;
-	let mut state = State::new();
 	
-	let mut visited_instructions = HashSet::new();
-	
-	loop {
-		if !visited_instructions.insert(state.ip) {
-			println!("State of accumulator before visiting instruction on line {} for the second time: {}", state.ip + 1, state.acc);
-			break
-		}
-		
-		if !state.execute(&instructions) {
-			break
-		}
-	}
+	find_infinite_loop(&instructions);
+	fix_infinite_loop(&instructions);
 	
 	Ok(())
 }
 
+fn find_infinite_loop(instructions: &Vec<Instruction>) {
+	let mut state = State::new();
+	
+	if state.execute_program(&instructions) == ProgramExecutionResult::InfiniteLoop {
+		println!("State of accumulator before visiting instruction on line {} for the second time: {}", state.ip + 1, state.acc);
+	}
+}
+
+fn fix_infinite_loop(instructions: &Vec<Instruction>) {
+	let mut instructions = instructions.clone();
+	
+	for i in 0..instructions.len() {
+		let instruction = instructions.get(i).unwrap();
+		let replacement_opcode = match instruction.opcode {
+			Opcode::Nop => Some(Opcode::Jmp),
+			Opcode::Acc => None,
+			Opcode::Jmp => Some(Opcode::Nop)
+		};
+		
+		if let Some(replacement_opcode) = replacement_opcode {
+			let mut state = State::new();
+			let instruction = instruction.clone();
+			
+			instructions[i] = Instruction {
+				opcode: replacement_opcode,
+				offset: instruction.offset
+			};
+			
+			if state.execute_program(&instructions) == ProgramExecutionResult::SuccessfulTermination {
+				println!("State of accumulator after a successful termination with patched instruction on on line {}: {}", i + 1, state.acc);
+				return;
+			}
+			
+			instructions[i] = instruction;
+		}
+	}
+	
+	println!("No version of the program terminated successfully.");
+}
+
+#[derive(Copy, Clone)]
 enum Opcode {
 	Nop,
 	Acc,
@@ -46,6 +76,7 @@ impl FromStr for Opcode {
 	}
 }
 
+#[derive(Copy, Clone)]
 struct Instruction {
 	opcode: Opcode,
 	offset: i32,
@@ -55,16 +86,16 @@ impl Instruction {
 	fn apply(&self, state: &mut State) {
 		match self.opcode {
 			Opcode::Nop => {
-				state.ip += 1
+				state.ip += 1;
 			}
 			
 			Opcode::Acc => {
 				state.acc += self.offset;
-				state.ip += 1
+				state.ip += 1;
 			}
 			
 			Opcode::Jmp => {
-				state.ip = (state.ip as i32 + self.offset) as usize
+				state.ip += self.offset;
 			}
 		}
 	}
@@ -83,22 +114,46 @@ impl FromStr for Instruction {
 	}
 }
 
+#[derive(Eq, PartialEq)]
+enum ProgramExecutionResult {
+	InvalidInstructionPointer,
+	SuccessfulTermination,
+	InfiniteLoop,
+}
+
 struct State {
-	ip: usize,
+	ip: i32,
 	acc: i32,
+	visited_ips: HashSet<i32>,
 }
 
 impl State {
 	fn new() -> Self {
-		State { acc: 0, ip: 0 }
+		State {
+			acc: 0,
+			ip: 0,
+			visited_ips: HashSet::new(),
+		}
 	}
 	
-	fn execute(&mut self, instructions: &Vec<Instruction>) -> bool {
-		if let Some(instruction) = instructions.get(self.ip) {
+	fn execute_instruction(&mut self, instructions: &Vec<Instruction>) -> Option<ProgramExecutionResult> {
+		return if !self.visited_ips.insert(self.ip) {
+			Some(ProgramExecutionResult::InfiniteLoop)
+		} else if self.ip < 0 {
+			Some(ProgramExecutionResult::InvalidInstructionPointer)
+		} else if let Some(instruction) = instructions.get(self.ip as usize) {
 			instruction.apply(self);
-			true
+			None
 		} else {
-			false
+			Some(ProgramExecutionResult::SuccessfulTermination)
+		};
+	}
+	
+	fn execute_program(&mut self, instructions: &Vec<Instruction>) -> ProgramExecutionResult {
+		loop {
+			if let Some(result) = self.execute_instruction(&instructions) {
+				return result;
+			}
 		}
 	}
 }
