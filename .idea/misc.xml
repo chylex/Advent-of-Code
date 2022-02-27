@@ -6,9 +6,12 @@
   <component name="CidrRootsConfiguration">
     <sourceRoots>
       <file path="$PROJECT_DIR$/2015" />
+      <file path="$PROJECT_DIR$/2020" />
     </sourceRoots>
     <excludeRoots>
       <file path="$PROJECT_DIR$/.gradle" />
+      <file path="$PROJECT_DIR$/2020/target" />
+      <file path="$PROJECT_DIR$/2021" />
       <file path="$PROJECT_DIR$/build" />
       <file path="$PROJECT_DIR$/gradle" />
     </excludeRoots>
