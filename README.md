@@ -8,7 +8,9 @@ I have included Run Configurations for JetBrains IDEs, so if you use the appropr
 
 ## \[2021\] Kotlin
 
-The repository contains a Gradle project (`build.gradle.kts`) that sets up every day as a module. You should be able to load the Gradle project into [IntelliJ IDEA](https://www.jetbrains.com/idea/).
+The repository contains a Gradle project (`2021/build.gradle.kts`) that sets up every day as a source root and a task that can be launched with `gradlew <day>`, for ex. `gradlew 01`.
+
+You should be able to load the Gradle project into [IntelliJ IDEA](https://www.jetbrains.com/idea/).
 
 The source code is in `main.kt`. The run configuration executes the `main()` method in this file.
 

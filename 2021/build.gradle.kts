@@ -1,10 +1,12 @@
+@file:Suppress("ConvertLambdaToReference")
+
 plugins {
     kotlin("jvm") version "1.6.0"
 	idea
 }
 
 group = "com.chylex.adventofcode"
-version = "1.0-SNAPSHOT"
+version = "1.0"
 
 repositories {
     mavenCentral()
@@ -19,16 +21,14 @@ idea {
 		file(".gradle"),
 		file("build"),
 		file("gradle"),
-		file("2015"),
-		file("2020")
 	))
 }
 
 sourceSets {
-	fun make(year: Int, day: Int) {
+	fun make(day: Int) {
 		val paddedDay = day.toString().padStart(2, '0')
 		
-		val sourceFolder = file("$year/$paddedDay")
+		val sourceFolder = file(paddedDay)
 		val resourceFolder = sourceFolder.resolve("input")
 		
 		if (!sourceFolder.exists()) {
@@ -38,18 +38,21 @@ sourceSets {
 			resourceFolder.resolve("1.txt").writeText("")
 		}
 		
-		create("$year-$paddedDay") {
+		create(paddedDay) {
 			java.setSrcDirs(listOf(sourceFolder))
 			resources.setSrcDirs(listOf(resourceFolder))
 		}
+		
+		tasks.register<JavaExec>(paddedDay) {
+			group = "run"
+			
+			mainClass.set("MainKt")
+			workingDir = sourceFolder
+			classpath = sourceSets[paddedDay].runtimeClasspath
+		}
 	}
 	
-	make(2021, 1)
-	make(2021, 2)
-	make(2021, 3)
-	make(2021, 4)
-	make(2021, 5)
-	make(2021, 6)
-	make(2021, 7)
-	make(2021, 8)
+	for (day in 1..8) {
+		make(day)
+	}
 }
