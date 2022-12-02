@@ -16,7 +16,9 @@ The source code is in `main.kt`. The run configuration executes the `main()` met
 
 ## \[2020\] Rust
 
-The repository contains a Cargo project (`2020/Cargo.toml`) that sets up every day as a binary target that can be launched with `cargo run --bin <day>`, for ex. `cargo run --bin 01`. You should be able to load the Cargo project into [CLion](https://www.jetbrains.com/clion/).
+The repository contains a Cargo project (`2020/Cargo.toml`) that sets up every day as a binary target that can be launched with `cargo run --bin <day>`, for ex. `cargo run --bin 01`.
+
+You should be able to load the Cargo project into [CLion](https://www.jetbrains.com/clion/).
 
 The source code is in `main.rs`. The run configuration executes the `main()` function in this file.
 
