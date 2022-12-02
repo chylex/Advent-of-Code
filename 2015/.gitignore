@@ -1,2 +1,7 @@
+/.idea/*
+!/.idea/cmake.xml
+!/.idea/misc.xml
+!/.idea/runConfigurations
+
 /cmake-build-debug/
 /cmake-build-release/

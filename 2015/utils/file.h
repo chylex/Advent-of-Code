@@ -1,5 +1,5 @@
-#ifndef ADVENTOFCODE_FILE_H
-#define ADVENTOFCODE_FILE_H
+#ifndef INC_2015_FILE_H
+#define INC_2015_FILE_H
 
 #include "stdio.h"
 #include "stdlib.h"
@@ -65,4 +65,4 @@ char* readFile(const char* filename) {
 	return contents;
 }
 
-#endif //ADVENTOFCODE_FILE_H
+#endif //INC_2015_FILE_H

@@ -1,5 +1,5 @@
-#ifndef ADVENTOFCODE_BENCHMARK_H
-#define ADVENTOFCODE_BENCHMARK_H
+#ifndef INC_2015_BENCHMARK_H
+#define INC_2015_BENCHMARK_H
 
 #include "stdio.h"
 
@@ -64,4 +64,4 @@ void runBenchmark(const entryPointCallback ep, char* input) {
 
 #undef BENCHMARK_RUNS
 
-#endif //ADVENTOFCODE_BENCHMARK_H
+#endif //INC_2015_BENCHMARK_H

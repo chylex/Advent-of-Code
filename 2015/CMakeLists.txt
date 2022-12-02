@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.20)
 
-project(AOC)
+project(2015)
 
 enable_language(ASM_NASM)
 
