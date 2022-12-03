@@ -60,3 +60,4 @@ The versions should not matter, but I used Visual Studio 2019 with `MSVC v142 (1
 |-----:|----:|----------|
 | 2022 |  01 | Python   |
 | 2022 |  02 | Python   |
+| 2022 |  03 | Python   |
