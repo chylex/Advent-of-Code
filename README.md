@@ -10,6 +10,12 @@ If you use JetBrains IDEs, you can open each year's folder in the appropriate ID
 
 # Languages
 
+## \[2022\] Python
+
+The `2022` folder does not have any special project. You can run the `main.py` file in each day's folder directly using Python 3.11 or newer (older versions may also work, but this is not guaranteed).
+
+You should be able to load the `2022` folder into [PyCharm](https://www.jetbrains.com/pycharm/).
+
 ## \[2021\] Kotlin
 
 The `2021` folder contains a Gradle project (`build.gradle.kts`) that sets up every day as a source root and task that can be launched with `gradlew <day>` (for ex. `gradlew 01`).
