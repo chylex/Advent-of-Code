@@ -6,7 +6,7 @@ import kotlin.system.measureTimeMillis
 
 fun main() {
 	val lineRegex = Regex("^(\\d+),(\\d+) -> (\\d+),(\\d+)$")
-	val lines = File("input/1.txt").readLines()
+	val lines = File("input.txt").readLines()
 		.mapNotNull(lineRegex::matchEntire)
 		.map { it.groupValues.takeLast(4).map(String::toInt) }
 		.map { Line(it[0], it[1], it[2], it[3]) }
@@ -15,7 +15,7 @@ fun main() {
 	println("(Took ${measureTimeMillis { part2(lines) }} ms)")
 }
 
-@Suppress("ProtectedInFinal", "MemberVisibilityCanBePrivate")
+@Suppress("MemberVisibilityCanBePrivate")
 data class Line(val x1: Int, val y1: Int, val x2: Int, val y2: Int) {
 	val minX = min(x1, x2)
 	val minY = min(y1, y2)

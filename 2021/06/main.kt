@@ -3,7 +3,7 @@ import java.math.BigInteger
 import kotlin.system.measureTimeMillis
 
 fun main() {
-	val initialConfiguration = File("input/1.txt").readLines()
+	val initialConfiguration = File("input.txt").readLines()
 		.single()
 		.split(',')
 		.map(String::toInt)

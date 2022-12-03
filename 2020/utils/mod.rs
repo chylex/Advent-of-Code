@@ -8,7 +8,7 @@ use std::io::{BufRead, BufReader};
 use std::str::FromStr;
 
 pub fn read_input_lines() -> Result<Vec<String>, io::Error> {
-	let file = File::open("input/1.txt")?;
+	let file = File::open("input.txt")?;
 	return BufReader::new(file).lines().collect();
 }
 

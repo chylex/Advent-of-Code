@@ -2,7 +2,7 @@ import java.io.File
 import kotlin.math.abs
 
 fun main() {
-	val originalPositions = File("input/1.txt").readLines().single().split(',').map(String::toInt).toIntArray()
+	val originalPositions = File("input.txt").readLines().single().split(',').map(String::toInt).toIntArray()
 	
 	val p1 = originalPositions.minOrNull() ?: return
 	val p2 = originalPositions.maxOrNull() ?: return

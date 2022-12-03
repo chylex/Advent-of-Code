@@ -16,7 +16,7 @@ extern void print(const char *format, ...) {
 }
 
 int main(void) {
-	char *input = readFile("input/1.txt");
+	char *input = readFile("input.txt");
 	
 	if (input == NULL) {
 		return 1;

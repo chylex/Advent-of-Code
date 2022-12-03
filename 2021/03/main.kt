@@ -1,7 +1,7 @@
 import java.io.File
 
 fun main() {
-	val lines = File("input/1.txt").readLines().filter(String::isNotEmpty)
+	val lines = File("input.txt").readLines().filter(String::isNotEmpty)
 	val input = Input(lines)
 	part1(input)
 	part2(input)

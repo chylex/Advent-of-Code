@@ -3,7 +3,7 @@ import java.io.File
 const val SIZE = 5
 
 fun main() {
-	val lineIterator = File("input/1.txt").readLines().iterator()
+	val lineIterator = File("input.txt").readLines().iterator()
 	val numbersToDraw = lineIterator.next().split(',').map(String::toInt).toList()
 	val boards = mutableListOf<Board>()
 	

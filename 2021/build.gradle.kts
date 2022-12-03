@@ -17,30 +17,24 @@ dependencies {
 }
 
 idea {
-	module.excludeDirs.addAll(listOf(
-		file(".gradle"),
-		file("build"),
-		file("gradle"),
-	))
+	module.excludeDirs.add(file("gradle"))
 }
 
 sourceSets {
 	fun make(day: Int) {
 		val paddedDay = day.toString().padStart(2, '0')
-		
 		val sourceFolder = file(paddedDay)
-		val resourceFolder = sourceFolder.resolve("input")
 		
 		if (!sourceFolder.exists()) {
 			sourceFolder.mkdir()
 			sourceFolder.resolve("main.kt").writeText("fun main() {\n\t\n}")
-			resourceFolder.mkdir()
-			resourceFolder.resolve("1.txt").writeText("")
+			sourceFolder.resolve("input.txt").writeText("")
 		}
 		
 		create(paddedDay) {
 			java.setSrcDirs(listOf(sourceFolder))
-			resources.setSrcDirs(listOf(resourceFolder))
+			resources.setSrcDirs(listOf(sourceFolder))
+			resources.include("*.txt")
 		}
 		
 		tasks.register<JavaExec>(paddedDay) {

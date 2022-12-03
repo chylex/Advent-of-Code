@@ -9,7 +9,7 @@ import java.io.File
 import java.util.EnumSet
 
 fun main() {
-	val records = File("input/1.txt").readLines().map { line ->
+	val records = File("input.txt").readLines().map { line ->
 		line.split(" | ", limit = 2).map { it.split(' ') }.let { Record(it[0], it[1]) }
 	}
 	
@@ -19,7 +19,7 @@ fun main() {
 
 fun part1(records: List<Record>) {
 	@Suppress("ConvertLambdaToReference")
-	val segmentCountToDigits = DIGITS
+	val segmentCountToDigits = allDigits
 		.map { it.value to it.positions.size }
 		.groupBy { it.second }
 		.mapValues { it.value.map { e -> e.first } }
@@ -48,7 +48,7 @@ enum class Position {
 	BOTTOM
 }
 
-private val DIGITS = listOf(
+private val allDigits = listOf(
 	Digit(0, EnumSet.of(TOP, TOP_LEFT, TOP_RIGHT, BOTTOM_LEFT, BOTTOM_RIGHT, BOTTOM)),
 	Digit(1, EnumSet.of(TOP_RIGHT, BOTTOM_RIGHT)),
 	Digit(2, EnumSet.of(TOP, TOP_RIGHT, MIDDLE, BOTTOM_LEFT, BOTTOM)),
@@ -124,7 +124,7 @@ data class Record(val patterns: List<String>, val output: List<String>) {
 		
 		return output.fold(0) { total, digit ->
 			val positions = digit.map(mapping::getValue).toSet()
-			val value = DIGITS.first { it.positions == positions }.value
+			val value = allDigits.first { it.positions == positions }.value
 			
 			(total * 10) + value
 		}
