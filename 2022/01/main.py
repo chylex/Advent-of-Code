@@ -1,8 +1,8 @@
 from itertools import groupby
 
-from utils.input import read_input
+from utils.input import read_input_lines
 
-lines = read_input()
+lines = read_input_lines()
 groups = [list(group) for is_group, group in groupby(lines, lambda x: x != '') if is_group]
 
 carrying_calories = ((int(item) for item in group) for group in groups)
