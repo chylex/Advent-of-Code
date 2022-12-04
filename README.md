@@ -70,7 +70,7 @@ The versions should not matter, but I used Visual Studio 2019 with `MSVC v142 (1
 | Year | Day | Language |  /  | Year | Day | Language   |  /  | Year | Day | Language |
 |-----:|----:|----------|-----|-----:|----:|------------|-----|-----:|----:|----------|
 | 2015 |  01 | NASM x64 |  /  | 2017 |  01 | PostgreSQL |  /  | 2020 |  01 | Rust     |
-| 2015 |  02 | NASM x64 |  /  |      |     |            |  /  | 2020 |  02 | Rust     |
+| 2015 |  02 | NASM x64 |  /  | 2017 |  02 | PostgreSQL |  /  | 2020 |  02 | Rust     |
 | 2015 |  03 | NASM x64 |  /  |      |     |            |  /  | 2020 |  03 | Rust     |
 |      |     |          |  /  |      |     |            |  /  | 2020 |  04 | Rust     |
 |      |     |          |  /  |      |     |            |  /  | 2020 |  05 | Rust     |

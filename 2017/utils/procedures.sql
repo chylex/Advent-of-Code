@@ -40,6 +40,6 @@ CREATE OR REPLACE PROCEDURE aoc_text_file(day TEXT) AS
 $$
 BEGIN
 	CALL aoc_setup_tables(day, 'input TEXT');
-	EXECUTE FORMAT('COPY %I FROM ''/aoc/%s/input.txt''', day || '.input', day);
+	EXECUTE FORMAT('COPY %I FROM ''/aoc/%s/input.txt'' WITH DELIMITER E''\1''', day || '.input', day);
 END
 $$ LANGUAGE plpgsql;
