@@ -16,4 +16,13 @@ SET result = (
 )
 WHERE part = 1;
 
+UPDATE "01.output"
+SET result = (
+	SELECT SUM(a.character::INTEGER) AS result
+	FROM "01.characters" a
+	INNER JOIN "01.characters" b ON a.index = (b.index + (SELECT (MAX(index) + 1) / 2 FROM "01.characters")) % (SELECT MAX(index) + 1 FROM "01.characters")
+	WHERE a.character = b.character
+)
+WHERE part = 2;
+
 SELECT aoc_results('01')
