@@ -28,6 +28,28 @@ The `2020` folder contains a Cargo project (`Cargo.toml`) that sets up every day
 
 You should be able to load the Cargo project into [CLion](https://www.jetbrains.com/clion/).
 
+## \[2017\] PostgreSQL
+
+The `2017` folder contains a Docker Compose file (`docker-compose.yml`) that launches a local PostgreSQL instance on `127.0.0.1:2017`, with the username `postgres` and password `aoc2017`. The container has the `2017` folder mounted to `/aoc`, so that PostgreSQL can see the input files.
+
+To start the Docker container, enter the `2017` folder and run `docker compose up -d`. To stop and remove the Docker container and its data, run `docker compose down -v`.
+
+You can execute the script for each day and get its output by running the following command. See [psql](https://www.postgresql.org/docs/current/app-psql.html) for the documentation of arguments and flags passed to the `psql` program.
+```
+# First, execute procedures.sql to set up procedures for turning input files into tables.
+docker exec aoc-2017-postgres psql postgres postgres -f /aoc/utils/procedures.sql
+
+# Substitute <day> for the specific day you want to run.
+docker exec aoc-2017-postgres psql postgres postgres -Atqf /aoc/<day>/main.sql
+
+# For example:
+docker exec aoc-2017-postgres psql postgres postgres -Atqf /aoc/01/main.sql
+```
+
+**Every day's script begins by dropping all tables whose name begins with that day.** Don't execute these scripts on any database you care about.
+
+You should be able to load the `2017` folder into [DataGrip](https://www.jetbrains.com/datagrip/), where you can attach the PostgreSQL data source, execute the scripts, and explore the tables created in the process.
+
 ## \[2015\] NASM x64 Assembly
 
 The `2015` folder contains a CMake project (`CMakeLists.txt`), which sets up every day as a CMake subproject.

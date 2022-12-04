@@ -1,0 +1,19 @@
+version: "3.9"
+
+services:
+  postgres:
+    image: postgres:15
+    container_name: "aoc-2017-postgres"
+    ports:
+      - "127.0.0.1:2017:5432"
+    volumes:
+      - postgres:/var/lib/postgresql/data
+      - .:/aoc:ro
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: aoc2017
+      POSTGRES_DB: postgres
+
+volumes: 
+  postgres:
+    name: "aoc-2017-postgres"
