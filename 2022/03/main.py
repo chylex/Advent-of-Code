@@ -1,4 +1,4 @@
-from itertools import chain
+from itertools import chain, zip_longest
 
 from utils.input import read_input_lines
 
@@ -22,5 +22,13 @@ def get_priority(item: chr) -> int:
         raise ValueError(f"Invalid item: {item}")
 
 
-total_priority = sum(map(get_priority, misplaced_items))
-print(f"Total priority: {total_priority}")
+total_misplaced_priority = sum(map(get_priority, misplaced_items))
+print(f"Total misplaced item priority: {total_misplaced_priority}")
+
+line_iterator = iter(lines)
+rucksacks_per_group = zip_longest(line_iterator, line_iterator, line_iterator)
+rucksack_items_per_group = (list(set(item) for item in rucksack) for rucksack in rucksacks_per_group)
+common_items_per_group = (set.intersection(*rucksack_items) for rucksack_items in rucksack_items_per_group)
+badges = chain.from_iterable(common_items_per_group)
+total_badge_priority = sum(map(get_priority, badges))
+print(f"Total badge priority: {total_badge_priority}")
