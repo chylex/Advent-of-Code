@@ -32,14 +32,24 @@ CREATE OR REPLACE FUNCTION aoc_results(day TEXT)
 AS
 $$
 BEGIN
-	RETURN QUERY EXECUTE FORMAT('SELECT CONCAT(''Part '', part, '' : '', result) FROM %I WHERE result IS NOT NULL ORDER BY part', day || '.output');
+	RETURN QUERY EXECUTE FORMAT('SELECT result FROM %I ORDER BY part', day || '.output');
 END
 $$ LANGUAGE plpgsql;
 
-CREATE OR REPLACE PROCEDURE aoc_text_file(day TEXT) AS
+CREATE OR REPLACE PROCEDURE aoc_load_file_lines(day TEXT) AS
 $$
 BEGIN
 	CALL aoc_setup_tables(day, 'input TEXT');
 	EXECUTE FORMAT('COPY %I FROM ''/aoc/%s/input.txt'' WITH DELIMITER E''\1''', day || '.input', day);
+END
+$$ LANGUAGE plpgsql;
+
+CREATE OR REPLACE PROCEDURE aoc_input_extract_cells(day TEXT, delimiter TEXT, value_type TEXT) AS
+$$
+BEGIN
+	EXECUTE FORMAT('CREATE TABLE %I AS
+		SELECT input.row, cell.col, cell.value::%s
+		FROM (SELECT ROW_NUMBER() OVER () AS row, input AS line FROM %I) input
+		CROSS JOIN REGEXP_SPLIT_TO_TABLE(input.line, %L) WITH ORDINALITY AS cell(value, col)', day || '.input.cells', value_type, day || '.input', delimiter);
 END
 $$ LANGUAGE plpgsql;
