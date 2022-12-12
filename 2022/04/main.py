@@ -12,6 +12,9 @@ class Assignment:
     def contains(self, other: "Assignment") -> bool:
         return self.first_section <= other.first_section and self.last_section >= other.last_section
     
+    def overlaps(self, other: "Assignment") -> bool:
+        return self.first_section in range(other.first_section, other.last_section + 1) or self.last_section in range(other.first_section, other.last_section + 1)
+    
     @staticmethod
     def from_str(line: str) -> "Assignment":
         (first_section, last_section) = line.split("-", maxsplit = 1)
@@ -26,8 +29,11 @@ class Pair:
     def __repr__(self) -> str:
         return f"{self.first}, {self.second}"
     
-    def has_overlap(self) -> bool:
+    def has_full_overlap(self) -> bool:
         return self.first.contains(self.second) or self.second.contains(self.first)
+    
+    def has_any_overlap(self) -> bool:
+        return self.first.overlaps(self.second) or self.second.overlaps(self.first)
     
     @staticmethod
     def from_line(line: str) -> "Pair":
@@ -36,7 +42,10 @@ class Pair:
 
 
 lines = read_input_lines()
-pairs = map(lambda line: Pair.from_line(line), lines)
+pairs = list(map(lambda line: Pair.from_line(line), lines))
 
-overlaps = sum(1 for pair in pairs if pair.has_overlap())
-print(f"Amount of assignments with overlap: {overlaps}")
+assignments_with_full_overlap = sum(1 for pair in pairs if pair.has_full_overlap())
+print(f"Amount of assignments with full overlap: {assignments_with_full_overlap}")
+
+assignments_with_any_overlap = sum(1 for pair in pairs if pair.has_any_overlap())
+print(f"Amount of assignments with any overlap: {assignments_with_any_overlap}")
