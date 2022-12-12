@@ -84,7 +84,7 @@ The versions should not matter, but I used Visual Studio 2019 with `MSVC v142 (1
 | 2021 |  02 | Kotlin   |  /  | 2022 |  02 | Python   |
 | 2021 |  03 | Kotlin   |  /  | 2022 |  03 | Python   |
 | 2021 |  04 | Kotlin   |  /  | 2022 |  04 | Python   |
-| 2021 |  05 | Kotlin   |  /  |      |     |          |
+| 2021 |  05 | Kotlin   |  /  | 2022 |  05 | Python   |
 | 2021 |  06 | Kotlin   |  /  |      |     |          |
 | 2021 |  07 | Kotlin   |  /  |      |     |          |
 | 2021 |  08 | Kotlin   |  /  |      |     |          |
