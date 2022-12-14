@@ -3,10 +3,22 @@ import re
 
 from utils.input import read_input_lines
 
-lines = iter(read_input_lines())
-initial_stack_configuration_lines = list(itertools.takewhile(lambda line: len(line) > 0, lines))[:-1]
 
-stacks = list()
+class Instruction:
+    def __init__(self, line: str):
+        parsed = re.search(r"move (\d+) from (\d+) to (\d+)", line)
+        
+        self.moved_count = int(parsed.group(1))
+        self.from_column = int(parsed.group(2)) - 1
+        self.to_column = int(parsed.group(3)) - 1
+
+
+lines = iter(read_input_lines())
+
+initial_stack_configuration_lines = list(itertools.takewhile(lambda line: len(line) > 0, lines))[:-1]
+instructions = [Instruction(line) for line in lines]
+
+initial_stacks = list()
 
 for line in reversed(initial_stack_configuration_lines):
     for stack_index, character_index in enumerate(range(1, len(line), 4)):
@@ -15,23 +27,44 @@ for line in reversed(initial_stack_configuration_lines):
         if crate == " ":
             continue
         
-        for i in range(len(stacks), stack_index + 1):
-            stacks.append(list())
+        for i in range(len(initial_stacks), stack_index + 1):
+            initial_stacks.append(list())
         
-        stacks[stack_index].append(crate)
+        initial_stacks[stack_index].append(crate)
 
-for instruction in lines:
-    parsed = re.search(r"move (\d+) from (\d+) to (\d+)", instruction)
+
+def copy_initial_stacks() -> list[list[str]]:
+    return [stack.copy() for stack in initial_stacks]
+
+
+def print_stacks(title: str, stacks: list[list[str]]):
+    print(f"Top of each stack in {title}: ", end = "")
     
-    moved_count = int(parsed.group(1))
-    from_column = int(parsed.group(2)) - 1
-    to_column = int(parsed.group(3)) - 1
+    for stack in stacks:
+        print(stack[-1], end = "")
     
-    for i in range(moved_count):
-        moved_crate = stacks[from_column].pop()
-        stacks[to_column].append(moved_crate)
+    print()
 
-print("Top of each stack: ", end = "")
 
-for stack in stacks:
-    print(stack[-1], end = "")
+stacks = copy_initial_stacks()
+
+for instruction in instructions:
+    for _ in range(instruction.moved_count):
+        moved_crate = stacks[instruction.from_column].pop()
+        stacks[instruction.to_column].append(moved_crate)
+
+print_stacks("part 1", stacks)
+
+
+stacks = copy_initial_stacks()
+
+for instruction in instructions:
+    taken_crates = list()
+    
+    for _ in range(instruction.moved_count):
+        taken_crates.append(stacks[instruction.from_column].pop())
+    
+    for crate in reversed(taken_crates):
+        stacks[instruction.to_column].append(crate)
+
+print_stacks("part 2", stacks)
