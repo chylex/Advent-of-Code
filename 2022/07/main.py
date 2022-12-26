@@ -74,3 +74,12 @@ session.root_directory.collect_directories(all_directories)
 
 total_size_of_interesting_directories = sum(directory.get_size() for directory in all_directories if directory.get_size() <= 100_000)
 print(f"Total size of interesting directories: {total_size_of_interesting_directories}")
+
+total_disk_size = 70_000_000
+needed_free_disk_size = 30_000_000
+
+current_free_disk_size = total_disk_size - session.root_directory.get_size()
+minimum_folder_size_to_delete = needed_free_disk_size - current_free_disk_size
+
+size_of_deleted_folder = min(folder.get_size() for folder in all_directories if folder.get_size() >= minimum_folder_size_to_delete)
+print(f"Size of deleted folder: {size_of_deleted_folder}")
